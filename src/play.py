@@ -11,7 +11,7 @@ if __name__ == '__main__':
             if game.freeze(side):
                 side *= -1
                 continue
-            os.system('clear')
+            print("\033c")
             game.print_board()
             print(f"Turn: {Othello.piece_map(side)}")
             x = int(input('row: '))
@@ -20,11 +20,11 @@ if __name__ == '__main__':
             side *= -1
         except Exception as exception:
             print(exception)
-            input("press enter to try again...")
-    os.system('clear')
+            input("press enter and then try again.")
+    print("\033c")
     game.print_board()
     winner = game.get_winner()
     if winner == 0:
         print(u'{}{}The game is tie{}'.format(colors.BOLD, colors.GREEN, colors.RESET), end='\n\n')
-    else:    
+    else:
         print(u'{}{}The winner is: {}{}'.format(colors.BOLD, colors.GREEN, colors.RESET, Othello.piece_map(winner)), end='\n\n')

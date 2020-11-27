@@ -1,4 +1,3 @@
-
 from utils.ui import Cli, QT
 from othello import Othello
 from utils.exc import *
@@ -7,6 +6,7 @@ from utils.exc import *
 if __name__ == '__main__':
     game = Othello()
     ui = Cli()
+#    ui = QT()
 
     side = -1
     while not game.game_over():

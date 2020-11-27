@@ -13,7 +13,7 @@ class GameException(Exception):
             self.status = status
 
     def __str__(self):
-        return f'{colors.BOLD}{colors.RED}Error{self.code}- {self.message}{colors.RESET}'
+        return f"Error{self.code}- {self.message}"
 
 
 class IndexOutOfBoundException(GameException):

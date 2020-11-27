@@ -1,4 +1,5 @@
-from zenipy.zenipy import message, scale
+from zenipy.zenipy import message, scale, warning
+from zenipy.zenipy import error as qt_error
 from utils.color import colors
 from sys import exit as sys_exit
 
@@ -18,12 +19,12 @@ class Cli():
 
     @staticmethod
     def error(exception):
-        print(str(exception))
+        print(f"{colors.BOLD}{colors.RED}{exception}{colors.RESET}")
         sys_exit(1)
 
     @staticmethod
     def exception(exception):
-        print(str(exception))
+        print(f"{colors.BOLD}{colors.RED}{exception}{colors.RESET}")
         input("press enter and then try again.")
 
     @staticmethod
@@ -40,10 +41,28 @@ class QT():
     @staticmethod
     def show_game(board):
             print(colors.CLEAR)
-            print(game)
+            print(board)
 
     @staticmethod
     def get_x_y(turn):
         x = scale(text=f"{turn} x?", min=0, max=7)
         y = scale(text=f"{turn} y?", min=0, max=7)
         return (x,y)
+
+
+    @staticmethod
+    def error(exception):
+        qt_error(text=str(exception))
+        sys_exit(1)
+
+    @staticmethod
+    def exception(exception):
+        warning(text=f"{exception}\npress enter and then try again.")
+
+    @staticmethod
+    def tie():
+        message(text="The game is Tie")
+
+    @staticmethod
+    def win(winner):
+        message(text=f"Winner is:{winner}")

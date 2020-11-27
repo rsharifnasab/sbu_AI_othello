@@ -1,18 +1,19 @@
 import numpy as np
 from utils import exc
 
-class Othello(object):
-    
+
+class Othello():
+
     def __init__(self):
         self.reset_board()
-        
+
     def reset_board(self):
         self.board = np.zeros((8, 8), dtype=np.int)
         self.board[3, 3] = 1
         self.board[3, 4] = -1
         self.board[4, 3] = -1
         self.board[4, 4] = 1
-    
+
     def get_winner(self):
         t = np.sum(self.board)
         if t > 0:
@@ -20,19 +21,19 @@ class Othello(object):
         if t < 0:
             return -1
         return 0
-    
+
     def print_board(self):
         print("   ", end="")
         for i in range(8):
-            print(f"  {i}" , end=" ")
+            print(f"  {i}", end=" ")
         print("\n   ", end="")
         for _ in range(16):
             print("--", end="")
         print("-")
         for i in range(8):
-            print(f" {i}" , end=" ")
+            print(f" {i}", end=" ")
             for j in range(8):
-                print("¦" + Othello.piece_map(self.board[i,j]), end="")
+                print("¦" + Othello.piece_map(self.board[i, j]), end="")
             print("¦")
             print("   ", end="")
             for _ in range(16):
@@ -42,11 +43,11 @@ class Othello(object):
     @staticmethod
     def piece_map(x):
         return {
-            1 : ' ● ',
+            1: ' ● ',
             -1: ' ○ ',
-            0 : '   ',
+            0: '   ',
         }[x]
-        
+
     def play_move(self, x, y, side):
         """ 
         Put a new piece on the board using given Args.
@@ -60,12 +61,11 @@ class Othello(object):
         if not (-1 < x < 9 and -1 < y < 9):
             raise exc.IndexOutOfBoundException
         if self.valid_flip(x, y, side):
-            self.board[x,y] = side
+            self.board[x, y] = side
             self.flip(x, y, side)
             return
         raise exc.NotAnAvailableMoveException
-        
-    
+
     def flip(self, x, y, side):
         """ 
         Flip board pieces based on putting the new piece.
@@ -74,7 +74,7 @@ class Othello(object):
             for dy in range(-1, 2):
                 if dy == 0 and dx == 0:
                     continue
-                if(self.valid_ray(x, y, side, dx, dy)):
+                if self.valid_ray(x, y, side, dx, dy):
                     self.flip_ray(x, y, side, dx, dy)
 
     def valid_ray(self, x, y, side, dx, dy):
@@ -107,7 +107,7 @@ class Othello(object):
             if ty < 0 or ty > 7:
                 return False
         return True
-    
+
     def flip_ray(self, x, y, side, dx, dy):
         """
         Flip pieces on [x, y]->[x+dx, y+dy] ray.
@@ -127,7 +127,7 @@ class Othello(object):
             for dy in range(-1, 2):
                 if dy == 0 and dx == 0:
                     continue
-                if(self.valid_ray(x, y, side, dx, dy)):
+                if self.valid_ray(x, y, side, dx, dy):
                     return True
         return False
 
@@ -137,7 +137,8 @@ class Othello(object):
         """
         for i in range(8):
             for j in range(8):
-                if self.board[i,j] == 0 and (self.valid_flip(i,j, -1) or self.valid_flip(i,j, 1)):
+                if (self.board[i, j] == 0 and
+                    (self.valid_flip(i, j, -1) or self.valid_flip(i, j, 1))):
                     return False
         return True
 
@@ -147,6 +148,6 @@ class Othello(object):
         """
         for i in range(8):
             for j in range(8):
-                if self.board[i,j] == 0 and self.valid_flip(i,j, side):
+                if self.board[i, j] == 0 and self.valid_flip(i, j, side):
                     return False
         return True

@@ -1,36 +1,39 @@
-from sys import exit as sys_exit
+
+from utils.ui import Cli, QT
 from othello import Othello
-from utils.exc import GameException
-from utils.color import colors
+from utils.exc import *
+
 
 if __name__ == '__main__':
     game = Othello()
+    ui = Cli()
+
     side = -1
     while not game.game_over():
         try:
             if game.freeze(side):
                 side *= -1
                 continue
-            print(colors.CLEAR)
-            game.print_board()
-            print(f"Turn: {Othello.piece_map(side)}")
-            x = int(input('row: '))
-            y = int(input('coloumn: '))
+
+            ui.show_game(game)
+            turn = str(Othello.piece_map(side))
+            x, y = ui.get_x_y(turn)
             game.play_move(x, y, side)
+
             side *= -1
+
+        except EndGameException as exception:
+            ui.error(exception)
         except GameException as exception:
-            print(exception)
-            input("press enter and then try again.")
+            ui.exception(exception)
         except ValueError as ve:
-            input("bad input, press enter and try again")
+            ui.exception(ve)
         except KeyboardInterrupt:
-            print("\ngoodbye")
-            sys_exit(1)
-    print(colors.CLEAR)
-    game.print_board()
+            ui.error("\nterminated by Ctrl-C")
+
+    ui.show_game(game)
     winner = game.get_winner()
     if winner == 0:
-        print(f'{colors.BOLD}{colors.GREEN}The game is tie{colors.RESET}\n')
+        ui.tie()
     else:
-        print(
-            f'{colors.BOLD}{colors.GREEN}Winner is: {colors.RESET}{Othello.piece_map(winner)}\n')
+        ui.win(Othello.piece_map(winner))

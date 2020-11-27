@@ -22,23 +22,20 @@ class Othello():
             return -1
         return 0
 
-    def print_board(self):
-        print("   ", end="")
+    def __str__(self):
+        ans = "   "
         for i in range(8):
-            print(f"  {i}", end=" ")
-        print("\n   ", end="")
-        for _ in range(16):
-            print("--", end="")
-        print("-")
+            ans += f"  {i} "
+        ans += "\n   "
+        ans += "--"*17 + "\n"
         for i in range(8):
-            print(f" {i}", end=" ")
+            ans += f" {i} "
             for j in range(8):
-                print("¦" + Othello.piece_map(self.board[i, j]), end="")
-            print("¦")
-            print("   ", end="")
-            for _ in range(16):
-                print("--", end="")
-            print("-")
+                ans += "¦" + Othello.piece_map(self.board[i, j])
+            ans += "¦\n"
+            ans += "   "
+            ans += "--"*17 + "\n"
+        return ans
 
     @staticmethod
     def piece_map(x):
@@ -58,6 +55,14 @@ class Othello():
             side (int): side of the new piece
 
         """
+        if x is None:
+            raise exc.EndGameException
+        if y is None:
+            raise exc.EndGameException
+        
+        x = int(x)
+        y = int(y)
+
         if not (-1 < x < 9 and -1 < y < 9):
             raise exc.IndexOutOfBoundException
         if self.valid_flip(x, y, side):
@@ -138,7 +143,7 @@ class Othello():
         for i in range(8):
             for j in range(8):
                 if (self.board[i, j] == 0 and
-                    (self.valid_flip(i, j, -1) or self.valid_flip(i, j, 1))):
+                        (self.valid_flip(i, j, -1) or self.valid_flip(i, j, 1))):
                     return False
         return True
 

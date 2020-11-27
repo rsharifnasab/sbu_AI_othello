@@ -23,3 +23,8 @@ class IndexOutOfBoundException(GameException):
 class NotAnAvailableMoveException(GameException):
     code=102
     message='It isn\'t an available move!'
+
+
+class EndGameException(GameException):
+    code=103
+    message='you left the game'

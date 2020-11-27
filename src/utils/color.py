@@ -5,3 +5,5 @@ class colors(object):
     RESET = '\u001b[0m'
     CLEAR = '\u001b[0m'
 
+def error(text):
+    print(f"{colors.BOLD}{colors.RED}{text}{colors.RESET}")

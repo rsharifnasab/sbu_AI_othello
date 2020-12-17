@@ -1,26 +1,11 @@
 from utils.ui import Cli, QT
 from othello import Othello
 from utils.exc import *
-import sys
+from utils.argparse import ui_chooser
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     game = Othello()
-    if len(sys.argv) > 1:
-        if sys.argv[1] in ['-c', '--cli']:
-            ui = Cli()
-        elif sys.argv[1] in ['-g', '--gui']:
-            ui = QT()
-        else:
-            print(f"""error: unknown option `{sys.argv[1]}\'
-options:
-
-    -c, --cli            command line interface
-    -g, --gui            graphical user interface
-            """)
-            exit()
-    else:
-            ui = QT()
+    ui = ui_chooser()
 
     side = -1
     while not game.game_over():

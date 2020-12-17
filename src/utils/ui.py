@@ -36,6 +36,11 @@ class Cli():
         print(f'{colors.BOLD}{colors.GREEN}Winner is: {colors.RESET}{winner}\n')
 
 
+    @staticmethod 
+    def ai_think(turn):
+        print(f"ai is thinikng... as {turn}")
+
+
 
 class QT():
     @staticmethod
@@ -66,3 +71,10 @@ class QT():
     @staticmethod
     def win(winner):
         message(text=f"Winner is:{winner}")
+
+
+
+    @staticmethod 
+    def ai_think(turn):
+        message("ai turn", text="press ok to start thinking")
+        print(f"ai is thinikng... as {turn}")

@@ -16,7 +16,7 @@ class Ai():
         ui.show_game(game)
         ui.ai_think(turn)
 
-        depth = 6
+        depth = 9
         (x, y), _ = Ai.minimax(game, depth, alpha=-inf, beta=+inf,
                                is_computer=True, turn=turn)
 
@@ -56,7 +56,7 @@ class Ai():
                 beta = min(beta, best[1])
 
             # prune?
-            #if beta <= alpha:
-            #    break
+            if beta <= alpha:
+                break
 
         return best

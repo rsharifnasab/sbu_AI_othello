@@ -16,7 +16,7 @@ class Ai():
         ui.show_game(game)
         ui.ai_think(turn)
 
-        depth = 5
+        depth = 6
         (x, y), _ = Ai.minimax(game, depth, alpha=-inf, beta=+inf,
                                is_computer=True, turn=turn)
 
@@ -29,8 +29,6 @@ class Ai():
 
     @staticmethod
     def minimax(game, depth, alpha, beta, is_computer, turn):
-        print("minimax called")
-        print(f" avail moves: {game.available_moves(turn)}")
         if depth == 0 or game.game_over():
             return (-1, -1), Ai.heuristic(game)
 
@@ -40,9 +38,7 @@ class Ai():
             best = [(-1, -1), +inf]
 
 
-        print(f" avail moves: {  game.available_moves(turn)  }")
         for x, y in game.available_moves(turn):
-            assert False, "for  ejra shod"
             # handle board copies
             game_clone = game.clone()
             game_clone.play_move(x, y, turn)

@@ -23,7 +23,8 @@ def main():
         curr_player = players[0 if side == p1 else 1]
         try:
             turn = str(Othello.piece_map(not side))
-            x, y = curr_player.get_move(game, ui, turn)
+            game.available_moves(side)
+            x, y = curr_player.get_move(game, ui, side)
             game.play_move(x, y, side)
 
             side *= -1

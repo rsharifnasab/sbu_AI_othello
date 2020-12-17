@@ -17,7 +17,8 @@ class Othello():
 
     def clone(self):
         c = Othello()
-        np.copyTo(self.board, c.board)
+        #  numpy.copyto(destination, source)
+        np.copyto(c.board, self.board)
         c.steps_passed = self.steps_passed
         return c
 
@@ -71,7 +72,7 @@ class Othello():
         y = int(y)
 
         if not (-1 < x < 9 and -1 < y < 9):
-            print(f" TODO: index out of.. {x} , {y}")
+            print(f"index out of.. {x} , {y}")
             raise exc.IndexOutOfBoundException
         if self.valid_flip(x, y, side):
             self.board[x, y] = side
@@ -149,14 +150,11 @@ class Othello():
         """
             return tuple Set of available moves
         """
-        print("av called")
         moves = []
         for i, row in enumerate(self.board):
             for j, elem in enumerate(row):
                 if elem == 0 and self.valid_flip(i, j, side):
-                    print(f"move is : {i} {j}")
                     moves.append((i, j,))
-        print(f" moves : {moves}")
         return moves
 
     def game_over(self):

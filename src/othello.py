@@ -8,6 +8,7 @@ class Othello():
         self.reset_board()
 
     def reset_board(self):
+        self.steps_passed = 0
         self.board = np.zeros((8, 8), dtype=np.int)
         self.board[3, 3] = 1
         self.board[3, 4] = -1
@@ -17,6 +18,7 @@ class Othello():
     def clone(self):
         c = Othello()
         np.copyTo(self.board, c.board)
+        c.steps_passed = self.steps_passed
         return c
 
     def get_winner(self):
@@ -69,10 +71,12 @@ class Othello():
         y = int(y)
 
         if not (-1 < x < 9 and -1 < y < 9):
+            print(f" TODO: index out of.. {x} , {y}")
             raise exc.IndexOutOfBoundException
         if self.valid_flip(x, y, side):
             self.board[x, y] = side
             self.flip(x, y, side)
+            self.steps_passed += 1
             return
         raise exc.NotAnAvailableMoveException
 
@@ -145,20 +149,23 @@ class Othello():
         """
             return tuple Set of available moves
         """
-        moves = set([])
+        print("av called")
+        moves = []
         for i, row in enumerate(self.board):
             for j, elem in enumerate(row):
-                if (elem == 0 and
-                        (self.valid_flip(i, j, side))):
-                    moves.add((i, j,))
-
+                if elem == 0 and self.valid_flip(i, j, side):
+                    print(f"move is : {i} {j}")
+                    moves.append((i, j,))
+        print(f" moves : {moves}")
         return moves
 
     def game_over(self):
         """
         Check if there is no available move and the game is over.
         """
-        all_moves = self.available_moves(-1) | self.available_moves(+1)
+        p1 = self.available_moves(-1)
+        p2 = self.available_moves(+1)
+        all_moves = p1 + p2
         return len(all_moves) == 0
 
     def freeze(self, side):

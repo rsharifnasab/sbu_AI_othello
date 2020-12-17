@@ -15,7 +15,6 @@ def main():
     players = player_creator()
 
     side = p1
-    round = 0
     while not game.game_over():
         if game.freeze(side):
             side *= -1
@@ -27,7 +26,6 @@ def main():
             x, y = curr_player.get_move(game, ui, turn)
             game.play_move(x, y, side)
 
-            round += 1
             side *= -1
 
         except EndGameException as exception:

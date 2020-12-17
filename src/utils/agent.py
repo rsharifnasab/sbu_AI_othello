@@ -16,7 +16,7 @@ class Ai():
         ui.show_game(game)
         ui.ai_think(turn)
 
-        depth = 9
+        depth = 7
         (x, y), _ = Ai.minimax(game, depth, alpha=-inf, beta=+inf,
                                is_computer=True, turn=turn)
 

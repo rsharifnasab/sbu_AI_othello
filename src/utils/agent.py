@@ -23,19 +23,17 @@ class Ai():
         return x, y
 
     @staticmethod
-    def heuristic(board, steps_passed):
-	
-        if board.steps_passed < 10:
-            return calculate_mobility(board)
-        elif board.steps_passed < 50:
-            return calculate_positional(board)
+    def heuristic(game):
+
+        if game.steps_passed < 10:
+            return Ai.calculate_mobility(game)
+        elif game.steps_passed < 50:
+            return Ai.calculate_positional(game)
         else:
-            return calculate_absolute(board)
-
-
+            return Ai.calculate_absolute(game)
 
     @staticmethod
-    def calculate_positional(board):
+    def calculate_positional(game):
         """
         based on valuable positions ( such as corners and edges)
         """
@@ -48,11 +46,11 @@ class Ai():
             [10,  -2,  -1, -1, -1, -1,  -2, -10],
             [-20, -50, -2, -2, -2, -2, -50, -20],
             [100, -20, 10,  5,  5, 10, -20, 100],
-            ])
-        return np.multiply(board, mask)
-    
+        ])
+        return np.sum(np.multiply(game.board, mask))
+
     @staticmethod
-    def calculate_mobility(board):
+    def calculate_mobility(game):
         """
         based on number of legal moves
         """
@@ -65,18 +63,23 @@ class Ai():
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [2, 0, 0, 0, 0, 0, 0, 2],
-            ])
-        m_player = board.available_moves(1)
-        m_opponent = board.available_moves(-1)
-        return 10*np.multiply(board, mask) + (m_player-m_opponent)/(m_player+m_opponent)
+        ])
+        m_player = len(game.available_moves(1))
+        m_opponent = len(game.available_moves(-1))
+        all_moves = m_player + m_opponent
+        mult = 10*np.sum(np.multiply(game.board, mask))
+
+        if all_moves > 0:
+            return mult + (m_player-m_opponent)/(m_player+m_opponent)
+        else:
+            return mult - 100  # TODO
 
     @staticmethod
-    def calculate_absolute(board):
+    def calculate_absolute(game):
         """
         based on number of pieces
         """
-        return np.sum(board)
-
+        return np.sum(game.board)
 
     @staticmethod
     def minimax(game, depth, alpha, beta, is_computer, turn):
@@ -87,7 +90,6 @@ class Ai():
             best = [(-1, -1), -inf]
         else:
             best = [(-1, -1), +inf]
-
 
         for x, y in game.available_moves(turn):
             # handle board copies

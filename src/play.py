@@ -33,8 +33,8 @@ def main():
             ui.error(exception)
         except GameException as exception:
             ui.exception(exception)
-        except ValueError as ve:
-            ui.exception(ve)
+     #   except ValueError as ve:
+     #       ui.exception(ve)
         except KeyboardInterrupt:
             ui.error("\nterminated by Ctrl-C")
 

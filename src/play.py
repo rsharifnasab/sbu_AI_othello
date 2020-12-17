@@ -16,7 +16,7 @@ if __name__ == '__main__':
                 continue
 
             ui.show_game(game)
-            turn = str(Othello.piece_map(side))
+            turn = str(Othello.piece_map(side*-1))
             x, y = ui.get_x_y(turn)
             game.play_move(x, y, side)
 

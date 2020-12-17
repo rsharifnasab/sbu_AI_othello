@@ -1,14 +1,19 @@
 from argparse import ArgumentParser
 from .ui import Cli, QT
 
+
 def ui_chooser():
     parser = ArgumentParser(
         prog="src/play.py",
         description="awesome othello AI",
         epilog="enjoy playing :D"
     )
-    parser.add_argument("ui", choices=["cli", "gui"])
-    if parser.parse_args().ui == "cli":
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-c", "--cli", action="store_true",
+                       help="play game in command mode")
+    group.add_argument("-g", "--gui", action="store_true",
+                       help="play game in GUI mode")
+    if parser.parse_args().cli:
         return Cli()
     else:
         return QT()

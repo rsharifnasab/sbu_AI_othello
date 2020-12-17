@@ -34,6 +34,9 @@ class Cli():
     def win(winner):
         print(f'{colors.BOLD}{colors.GREEN}Winner is: {colors.RESET}{winner}\n')
 
+    @staticmethod
+    def alert_freeze_game():
+        print(f'{colors.BOLD}game is freezed!{colors.RESET}\n')
 
     @staticmethod 
     def ai_think(turn):
@@ -72,6 +75,9 @@ class QT():
         message(text=f"Winner is:{winner}")
 
 
+    @staticmethod
+    def alert_freeze_game():
+        message("freeze game", text="the game is freezed")
 
     @staticmethod 
     def ai_think(turn):

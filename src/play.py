@@ -17,6 +17,9 @@ def main():
     side = p1
     while not game.game_over():
         if game.freeze(side):
+            if game.freeze(-1 * side):
+                ui.alert_freeze_game()
+                break
             side *= -1
             continue
 

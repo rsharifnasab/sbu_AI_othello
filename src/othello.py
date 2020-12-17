@@ -4,10 +4,13 @@ from utils import exc
 
 class Othello():
 
-    def __init__(self):
-        self.reset_board()
+    p1 = -1
+    p2 = 1
+    pm = 2 # possible move
 
-    def reset_board(self):
+
+    def __init__(self):
+        self.last_played = Othello.p2
         self.steps_passed = 0
         self.board = np.zeros((8, 8), dtype=np.int)
         self.board[3, 3] = 1
@@ -15,9 +18,10 @@ class Othello():
         self.board[4, 3] = -1
         self.board[4, 4] = 1
 
+
     def clone(self):
         c = Othello()
-        #  numpy.copyto(destination, source)
+        # copyto(destination, source)
         np.copyto(c.board, self.board)
         c.steps_passed = self.steps_passed
         return c
@@ -31,6 +35,11 @@ class Othello():
         return 0
 
     def __str__(self):
+        moves = self.available_moves(-1 * self.last_played)
+        b = self.clone().board
+        for x,y in moves:
+            b[x, y] = Othello.pm
+
         ans = "   "
         for i in range(8):
             ans += f"  {i} "
@@ -39,7 +48,7 @@ class Othello():
         for i in range(8):
             ans += f" {i} "
             for j in range(8):
-                ans += "¦" + Othello.piece_map(self.board[i, j])
+                ans += "¦" + Othello.piece_map(b[i, j])
             ans += "¦\n"
             ans += "   "
             ans += "--"*17 + "\n"
@@ -48,9 +57,10 @@ class Othello():
     @staticmethod
     def piece_map(x):
         return {
-            1: ' ● ',
-            -1: ' ○ ',
-            0: '   ',
+            Othello.p2 : ' ● ',
+            Othello.p1 : ' ○ ',
+            0  : '   ',
+            Othello.pm : ' + ',
         }[x]
 
     def play_move(self, x, y, side):
@@ -74,11 +84,14 @@ class Othello():
         if not (-1 < x < 9 and -1 < y < 9):
             print(f"index out of.. {x} , {y}")
             raise exc.IndexOutOfBoundException
+
         if self.valid_flip(x, y, side):
             self.board[x, y] = side
             self.flip(x, y, side)
             self.steps_passed += 1
+            self.last_played = side
             return
+
         raise exc.NotAnAvailableMoveException
 
     def flip(self, x, y, side):

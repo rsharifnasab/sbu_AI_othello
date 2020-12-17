@@ -5,7 +5,6 @@ from sys import exit as sys_exit
 
 
 class Cli():
-
     @staticmethod
     def show_game(game):
             print(colors.CLEAR)

@@ -14,6 +14,11 @@ class Othello():
         self.board[4, 3] = -1
         self.board[4, 4] = 1
 
+    def clone(self):
+        c = Othello()
+        np.copyTo(self.board, c.board)
+        return c
+
     def get_winner(self):
         t = np.sum(self.board)
         if t > 0:
@@ -59,7 +64,7 @@ class Othello():
             raise exc.EndGameException
         if y is None:
             raise exc.EndGameException
-        
+
         x = int(x)
         y = int(y)
 
@@ -136,23 +141,29 @@ class Othello():
                     return True
         return False
 
+    def available_moves(self, side):
+        """
+            return tuple Set of available moves
+        """
+        moves = set([])
+        for i, row in enumerate(self.board):
+            for j, elem in enumerate(row):
+                if (elem == 0 and
+                        (self.valid_flip(i, j, side))):
+                    moves.add((i, j,))
+
+        return moves
+
     def game_over(self):
         """
         Check if there is no available move and the game is over.
         """
-        for i in range(8):
-            for j in range(8):
-                if (self.board[i, j] == 0 and
-                        (self.valid_flip(i, j, -1) or self.valid_flip(i, j, 1))):
-                    return False
-        return True
+        all_moves = self.available_moves(-1) | self.available_moves(+1)
+        return len(all_moves) == 0
 
     def freeze(self, side):
         """
         Check if player is freezed and opposite side gets an alternate turn.
         """
-        for i in range(8):
-            for j in range(8):
-                if self.board[i, j] == 0 and self.valid_flip(i, j, side):
-                    return False
-        return True
+        moves = self.available_moves(side)
+        return len(moves) == 0

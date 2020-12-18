@@ -99,8 +99,10 @@ class Ai(Agent):
         return np.sum(game.board)
 
     @staticmethod
-    def move_sorter(move: Tuple[int, int]) -> int:
-        return 0
+    def move_sorter(x : int, y : int, side : int, game: Othello) -> int:
+        cl = game.clone()
+        cl.play_move(x,y, side)
+        return Ai.heuristic(cl)
 
     @staticmethod
     def minimax(game: Othello, depth: int,
@@ -122,9 +124,10 @@ class Ai(Agent):
 
         # optimize tree: select relevant nodes only
         optimized_moves: List[Tuple[int, int]] = available_moves
-        optimized_moves.sort(key=Ai.move_sorter)
-        if depth < Ai.DEPTH - 2:  # not first minimax calls
-            optimized_moves = optimized_moves[:4]
+        optimized_moves.sort(key=lambda move:
+                Ai.move_sorter(move[0], move[1], turn, game))
+        if depth < Ai.DEPTH - 1:  # not first minimax calls
+            optimized_moves = optimized_moves[:3]
 
         for x, y in optimized_moves:
             # handle board copies

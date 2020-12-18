@@ -1,14 +1,16 @@
 from math import inf
+from typing import List, Set, Dict, Tuple, Optional
 from abc import ABC, abstractmethod
 import numpy as np
 from othello import Othello
-from typing import List, Set, Dict, Tuple, Optional
+
 
 class Agent(ABC):
     @staticmethod
     @abstractmethod
     def get_move(game: Othello, ui, turn: int):
         pass
+
 
 class User(Agent):
     @staticmethod
@@ -19,6 +21,18 @@ class User(Agent):
 
 
 class Ai(Agent):
+
+    DEPTH: int = 10
+
+    @staticmethod
+    def get_move(game: Othello, ui, turn: int):
+        ui.show_game(game)
+        ui.ai_think(f"{turn} huer : {Ai.heuristic(game)}")
+
+        (x, y), _ = Ai.minimax(game, Ai.DEPTH, ab=(-inf, +inf),
+                               is_computer=True, turn=turn)
+
+        return x, y
 
     # 10 < level < 50
     positional_mask = np.array([
@@ -43,17 +57,6 @@ class Ai(Agent):
         [0,  0, 0, 0, 0, 0, 0,  0],
         [18, 0, 0, 0, 0, 0, 0, 18],
     ])
-
-    @staticmethod
-    def get_move(game: Othello, ui, turn: int):
-        ui.show_game(game)
-        ui.ai_think(f"{turn} huer : {Ai.heuristic(game)}")
-
-        depth = 7
-        (x, y), _ = Ai.minimax(game, depth, ab=(-inf, +inf),
-                               is_computer=True, turn=turn)
-
-        return x, y
 
     @staticmethod
     def heuristic(game: Othello) -> int:
@@ -96,6 +99,10 @@ class Ai(Agent):
         return np.sum(game.board)
 
     @staticmethod
+    def move_sorter(move: Tuple[int, int]) -> int:
+        return 0
+
+    @staticmethod
     def minimax(game: Othello, depth: int,
                 ab: Tuple[float, float],
                 is_computer: bool, turn: int) -> Tuple[Tuple[int, int], int]:
@@ -113,7 +120,13 @@ class Ai(Agent):
         else:
             best = ((-1, -1), +inf)
 
-        for x, y in available_moves:
+        # optimize tree: select relevant nodes only
+        optimized_moves: List[Tuple[int, int]] = available_moves
+        optimized_moves.sort(key=Ai.move_sorter)
+        if depth < Ai.DEPTH - 2:  # not first minimax calls
+            optimized_moves = optimized_moves[:4]
+
+        for x, y in optimized_moves:
             # handle board copies
             game_clone = game.clone()
             game_clone.play_move(x, y, turn)

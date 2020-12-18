@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from utils.ui import Cli, QT
+from utils.ui import Ui
 from othello import Othello
 from utils.exc import *
 from utils.argparse import ui_chooser, player_creator
@@ -7,12 +7,12 @@ from utils.argparse import ui_chooser, player_creator
 
 def main():
 
-    p1 = -1
-    p2 = 1
+    p1 : int = -1
+    p2 : int = 1
 
-    game = Othello()
-    ui = ui_chooser()
-    players = player_creator()
+    game : Othello = Othello()
+    ui : Ui = ui_chooser()
+    players : Tuple[Agent, Agent] = player_creator()
 
     side = p1
     while not game.game_over():

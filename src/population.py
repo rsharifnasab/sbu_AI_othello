@@ -11,12 +11,14 @@ from utils.exc import *
 POPULATION_SIZE = 8
 GENERATION_SIZE = 50
 
+
 def evolution():
     global POPULATION_SIZE
     global GENERATION_SIZE
     generation = 1
 
-    population = [Individual(Individual.create_gnome()) for _ in range(POPULATION_SIZE)]
+    population = [Individual(Individual.create_gnome())
+                  for _ in range(POPULATION_SIZE)]
     print(f'first generation individuals are:')
     for individual in population:
         print(individual.chromosome)
@@ -53,6 +55,7 @@ def evolution():
     print('best mask: ')
     print(population[0].chromosome)
 
+
 def fight(mask1, mask2):
     p1: int = -1
     p2: int = 1
@@ -64,7 +67,7 @@ def fight(mask1, mask2):
     fighter2.positional_mask = mask2
     players: Tuple[Agent, Agent] = (fighter1, fighter2)
 
-    side : int = p1
+    side: int = p1
     while not game.game_over():
         if game.freeze(side):
             if game.freeze(-1 * side):
@@ -72,7 +75,7 @@ def fight(mask1, mask2):
             side *= -1
             continue
 
-        curr_player : Agent = players[0 if side == p1 else 1]
+        curr_player: Agent = players[0 if side == p1 else 1]
         try:
             game.available_moves(side)
             x, y = curr_player.get_move(game, None, side)
@@ -85,6 +88,7 @@ def fight(mask1, mask2):
 
     winner = game.get_winner()
     return winner
+
 
 if __name__ == "__main__":
     evolution()

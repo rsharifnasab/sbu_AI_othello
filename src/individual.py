@@ -1,6 +1,7 @@
 import random
 import numpy as np
 
+
 class Individual(object):
 
     def __init__(self, chromosome):
@@ -8,11 +9,10 @@ class Individual(object):
 
     @classmethod
     def mutated_genes(self):
-        row = np.zeros((1,8))
+        row = np.zeros((1, 8))
         for j in range(8):
-            row[0,j] = random.randint(0,300)
+            row[0, j] = random.randint(0, 300)
         return row
-
 
     @classmethod
     def create_gnome(self):
@@ -28,13 +28,13 @@ class Individual(object):
 
             prob = random.random()
 
-            if prob<0.45:
+            if prob < 0.45:
                 child_chromosome.append(p1)
-            elif prob<0.90:
+            elif prob < 0.90:
                 child_chromosome.append(p2)
             else:
                 child_chromosome.append(self.mutated_genes())
-            
+
         child_chromosome = np.array(child_chromosome, dtype=object)
 
         return Individual(child_chromosome)
@@ -46,11 +46,11 @@ class Individual(object):
 
             prob = random.random()
 
-            if prob<0.90:
+            if prob < 0.90:
                 child_chromosome.append((p1+p2)/2)
             else:
                 child_chromosome.append(self.mutated_genes())
-            
+
         child_chromosome = np.array(child_chromosome, dtype=object)
 
         return Individual(child_chromosome)

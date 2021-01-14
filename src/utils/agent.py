@@ -22,12 +22,13 @@ class User(Agent):
 
 class Ai(Agent):
 
-    DEPTH: int = 10
+    DEPTH: int = 3
 
     @staticmethod
     def get_move(game: Othello, ui, turn: int):
-        ui.show_game(game)
-        ui.ai_think(f"{turn} huer : {Ai.heuristic(game)}")
+        if not ui is None :
+            ui.show_game(game)
+            ui.ai_think(f"{turn} huer : {Ai.heuristic(game)}")
 
         (x, y), _ = Ai.minimax(game, Ai.DEPTH, ab=(-inf, +inf),
                                is_computer=True, turn=turn)

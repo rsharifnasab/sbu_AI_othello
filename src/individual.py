@@ -10,7 +10,7 @@ class Individual(object):
     def mutated_genes(self):
         row = np.zeros((1,8))
         for j in range(8):
-            row[j] = random.randint(0,300)
+            row[0,j] = random.randint(0,300)
         return row
 
 
@@ -21,7 +21,7 @@ class Individual(object):
             mask[i] = self.mutated_genes()
         return mask
 
-    def mate(self, par2):
+    def row_mate(self, par2):
         child_chromosome = []
 
         for p1, p2 in zip(self.chromosome, par2.chromosome):
@@ -34,5 +34,23 @@ class Individual(object):
                 child_chromosome.append(p2)
             else:
                 child_chromosome.append(self.mutated_genes())
+            
+        child_chromosome = np.array(child_chromosome, dtype=object)
+
+        return Individual(child_chromosome)
+
+    def avg_mate(self, par2):
+        child_chromosome = []
+
+        for p1, p2 in zip(self.chromosome, par2.chromosome):
+
+            prob = random.random()
+
+            if prob<0.90:
+                child_chromosome.append((p1+p2)/2)
+            else:
+                child_chromosome.append(self.mutated_genes())
+            
+        child_chromosome = np.array(child_chromosome, dtype=object)
 
         return Individual(child_chromosome)

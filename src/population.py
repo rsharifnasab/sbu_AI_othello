@@ -8,18 +8,24 @@ from utils.agent import Agent, Ai
 from othello import Othello
 from utils.exc import *
 
-POPULATION_SIZE = 8
-GENERATION_SIZE = 50
+POPULATION_SIZE = 8 
+GENERATION_SIZE = 32 // 32
+
+
+def tournament(population):
+    from functools import cmp_to_key
+    f = lambda a,b : -1 if fight(a.chromosome, b.chromosome) == 1 else 1
+
+    srtd = sorted(population, key=cmp_to_key(f), reverse=True)
+    return srtd[0].chromosome
 
 
 def evolution():
-    global POPULATION_SIZE
-    global GENERATION_SIZE
     generation = 1
 
     population = [Individual(Individual.create_gnome())
                   for _ in range(POPULATION_SIZE)]
-    print(f'first generation individuals are:')
+    print('first generation individuals are:')
     for individual in population:
         print(individual.chromosome)
 
@@ -52,8 +58,7 @@ def evolution():
 
         generation += 1
 
-    print('best mask: ')
-    print(population[0].chromosome)
+    print(f'best mask: \n{tournament(population)}')
 
 
 def fight(mask1, mask2):

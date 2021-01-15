@@ -108,7 +108,7 @@ class Ai(Agent):
     @staticmethod
     def minimax(game: Othello, depth: int,
                 ab: Tuple[float, float],
-                is_computer: bool, turn: int) -> Tuple[Tuple[int, int], int]:
+                is_computer: bool, turn: int) -> Tuple[Tuple[int, int], float]:
 
         available_moves: List[Tuple[int, int]] = game.available_moves(turn)
 

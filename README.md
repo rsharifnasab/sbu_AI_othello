@@ -6,4 +6,4 @@ we want to implement smart agent for Othello game
 
 more information in `project description.pdf`
 
-read about our ideas in REPORT.md`
+read about our ideas in `REPORT.md`
